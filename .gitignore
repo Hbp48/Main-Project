@@ -2,3 +2,5 @@ venv/
 myenv/
 models/
 .env
+yolo_nas_s.pt
+yolov5s.py
