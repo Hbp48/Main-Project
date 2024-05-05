@@ -1,0 +1,10 @@
+streamlit
+google-generativeai
+python-dotenv
+gtts
+playsound
+pyaudio
+opencv-python
+pytesseract
+super_gradients
+tesseract
