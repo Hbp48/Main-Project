@@ -3,4 +3,4 @@ myenv/
 models/
 .env
 yolo_nas_s.pt
-yolov5s.py
+yolov5s.pt
