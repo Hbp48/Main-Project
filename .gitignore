@@ -1,0 +1,6 @@
+./Equation-Description-PyTorch
+./Image-Captioning-via-YOLOv5-EncoderDecoderwithAttention-main
+.env
+
+# ignore .env file
+.env
