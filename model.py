@@ -38,7 +38,11 @@ else:
 
 try:
     while rval:
-        cv2.imshow("Live Feed", frame)
+        # Flip the frame horizontally
+        flipped_frame = cv2.flip(frame, 1)  # 1 for horizontal flip
+
+        # Display the flipped live video feed
+        cv2.imshow("Live Feed", flipped_frame)
         rval, frame = vc.read()
 
         # Check for user input to capture frame or exit
@@ -46,7 +50,7 @@ try:
         
         # Press 'c' to capture frame and ask a question
         if key == ord('c'):
-            captured_frame = frame.copy()
+            captured_frame = flipped_frame.copy()
             question = input("Ask a question about the captured frame: ")
             
             # Prepare the prompt with the question
