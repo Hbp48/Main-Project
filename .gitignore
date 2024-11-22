@@ -2,8 +2,9 @@ venv/
 myenv/
 models/
 .env
-mynewenv/
-detectron2/
-ByteTrack/
+./mynewenv
+./detectron2/
+./ByteTrack/
 yolov5s.pt
 yolov10n.pt
+./temp
