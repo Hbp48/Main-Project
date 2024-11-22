@@ -6,21 +6,22 @@ import pyttsx3
 import google.generativeai as genai
 from concurrent.futures import ThreadPoolExecutor
 import torch
-import pytesseract
-from super_gradients.training import models
-import torchvision.transforms as transforms
-from torchvision.transforms import functional as F
-from pycocotools.coco import COCO
+#import pytesseract
+#from super_gradients.training import models
+#import torchvision.transforms as transforms
+#from torchvision.transforms import functional as F
+#from pycocotools.coco import COCO
 import threading
-import requests
+#import requests
 from transformers import BlipProcessor, BlipForConditionalGeneration
+#from vertexai.preview import generative_models as genai
 
 
 load_dotenv()
 
 # Set up generative AI
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel("gemini-pro-vision")
+genai.configure(api_key="AIzaSyAWetxM8whh_s2ISO2QvuabrCQ9Ccq-RV8")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Initialize text-to-speech engine and lock
 engine_lock = threading.Lock()
@@ -61,9 +62,14 @@ def provide_audio_guidance(step, text=None):
     elif step == "exit":
         speak("Thank you for using Object Narration. Goodbye.")
 
+from ultralytics import YOLO
+
 def image_detection(image):
     speak("Loading YOLO-NAS-s model for object detection...")
+    
     model = torch.hub.load("ultralytics/yolov5", "yolov5s", pretrained=True)
+
+
     speak("YOLO-NAS-s model loaded.")
 
     speak("Performing inference on image...")
@@ -100,7 +106,8 @@ upload_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"]
 
 if upload_file:
     image = Image.open(upload_file)
-    st.image(image, caption="Uploaded Image.", use_column_width=True)
+    st.image(image, caption="Uploaded Image.", use_container_width=True)
+
 
     provide_audio_guidance("image_uploaded")
 
@@ -112,12 +119,12 @@ if upload_file:
         st.subheader("The Object detection Response is")
         st.write(objects_text)
 
-    ocr_text = pytesseract.image_to_string(image)
-    if ocr_text:
-        provide_audio_guidance("ocr")
-        st.subheader("The OCR Response is")
-        st.write(ocr_text)
-        speak(ocr_text)
+    #ocr_text = pytesseract.image_to_string(image)
+    #if ocr_text:
+     #   provide_audio_guidance("ocr")
+      #  st.subheader("The OCR Response is")
+       # st.write(ocr_text)
+        #speak(ocr_text)
 
     provide_audio_guidance("image_captioning")
     caption = img_cap(image)
@@ -127,7 +134,7 @@ if upload_file:
         speak(caption)
 
     provide_audio_guidance("narration")
-    narration_input = "Object detected: ".join([obj[0] for obj in detected_objects]) + "  OCR: " + ocr_text + " Image caption: " + caption + " generate a narration"
+    narration_input = "Object detected: ".join([obj[0] for obj in detected_objects]) + " Image caption: " + caption + " generate a narration"
     narration = get_gemini_response(narration_input, image)
     if narration:
         st.subheader("The Narration Response is")
@@ -135,9 +142,9 @@ if upload_file:
         speak("Based on the analysis, here is the narration of the image is : " + narration)
 
     ocr_gemini=get_gemini_response("Do all the ocr of text present in the image", image)
-    st.subheader("The OCR Response by LLM")
+    st.subheader("Text extracted from image")
     st.write(ocr_gemini)
-    speak("OCR using LLM : " + ocr_gemini)
+    speak("Text extracted: " + ocr_gemini)
     # index=0
     # t = 1
     # while t != 0:

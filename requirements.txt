@@ -8,3 +8,11 @@ opencv-python
 pytesseract
 super_gradients
 tesseract
+pyttsx3
+pycocotools
+transformers
+easydict
+supervision
+#bytetrack
+#strongsort
+numpy
